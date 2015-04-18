@@ -1,3 +1,6 @@
 # ignore database
 *.sqlite3
 **/migrations
+
+# temp file
+*.swp
