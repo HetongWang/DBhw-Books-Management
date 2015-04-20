@@ -1,6 +1,7 @@
 # ignore database
 *.sqlite3
-**/migrations
+**/migrations/**
 
 # temp file
 *.swp
+**/__pycache__/**
