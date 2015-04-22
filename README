@@ -1,0 +1,8 @@
+Super Books
+============
+## FAQ
+#### How to run in localhost
+1. install django `pip3 install django`
+2. execute `python manage.py runserver` in root directory
+
+maybe you need to create a database in local, run `python manage.py migrate`
