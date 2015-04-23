@@ -1,0 +1,14 @@
+{% extends "books/base.html" %}
+
+{% block container %}
+{% include "books/header.html" %}
+{% if content.none %}
+	<ul>
+	{% for book in content.books %}
+	    <li>{{ book.name }}</li>
+	{% endfor %}
+	</ul>
+{% else %}
+    <p>No book matches</p>
+{% endif %}
+{% endblock %}
