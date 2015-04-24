@@ -25,7 +25,7 @@ def search(request, content):
     return render(request, 'books/search.html', context)
 
 def login(request):
-   return render(request, 'books/login.html', {})
+    return render(request, 'books/login.html', {})
 
 def loginConfirm(request):
     username = request.POST['username']
@@ -36,9 +36,6 @@ def loginConfirm(request):
             login(user)
     else:
         pass
- 
-def user(request):
-    return render(request, 'books/user.html', {})
 
 def libadmin(request):
     return render(request, 'books/libadmin.html', {})

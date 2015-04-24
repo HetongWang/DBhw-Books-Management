@@ -3,12 +3,11 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Administrator(models.Model):
-    name = models.CharField(max_length=20)
-    password = models.CharField(max_length=40)
-    login_date = models.DateTimeField('last login time')
+    user = models.OneToOneField(User)
+    create_time = models.DateTimeField()
 
     def __str__(self):
-        return self.name
+        return self.user.name
 
 class Author(models.Model):
     name = models.CharField(max_length=20)
@@ -31,21 +30,28 @@ class Books(models.Model):
     author = models.ForeignKey(Author)
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
+    amount = models.IntegerField(default=1)
     left = models.IntegerField()
 
     def __str__(self):
         return self.name
 
+class CardType(models.Model):
+    name = models.CharField(max_length=40)
+
 class Card(models.Model):
-    user = models.OneToOneField(User)
     card_id = models.CharField(max_length=20, primary_key=True)
-    password = models.CharField(max_length=40)
     limit = models.IntegerField(default=4)
     fine = models.DecimalField(max_digits=10, decimal_places=2)
+    card_type = models.ForeignKey(CardType)
+
+    def __str__(self):
+        return self.card_id
 
 class Record(models.Model):
     book = models.ForeignKey(Books)
     card = models.ForeignKey(Card)
     borrow_time = models.DateTimeField(auto_now_add=True)
     return_time = models.DateTimeField()
+    admin = models.ForeignKey(Administrator)
 
