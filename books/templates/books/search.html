@@ -2,9 +2,9 @@
 
 {% block container %}
 {% include "books/header.html" %}
-{% if content.none %}
+{% if context.none %}
 	<ul>
-	{% for book in content.books %}
+	{% for book in context.books %}
 	    <li>{{ book.name }}</li>
 	{% endfor %}
 	</ul>

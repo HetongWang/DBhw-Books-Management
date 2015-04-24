@@ -3,10 +3,7 @@
 {% block container %}
 {% include "books/header.html" %}
 
-<form action="{% url 'books:search' %}" method="post">
-{% csrf_token %}
-    <input type="text" name="content" placeholder="Please type the book you want">
-    <input type="submit" value="Search" />
-</form>
+<input type="text" name="content" id="search-content" placeholder="Please type the book you want">
+<input type="submit" value="Search" id="search-submit"/>
 
 {% endblock %}

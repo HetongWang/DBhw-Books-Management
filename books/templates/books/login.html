@@ -1,0 +1,12 @@
+{% extends "books/base.html" %}
+
+<form action="{% url 'books:loginConfirm' %}" method="post">
+{% csrf_token %}
+    <label>Username</label>
+    <input type="text" name="username">
+    <label>Password</label>
+    <input type="text" name="password">
+    <input type="submit" value="Search" />
+</form>
+
+

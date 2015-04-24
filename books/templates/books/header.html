@@ -1,4 +1,8 @@
 <nav> 
 <h3>Super Books</h3>
-
+{% if context.is_login %}
+<a href="/user/">{{ context.user.name }}</a>
+{% else %}
+<a href="/login/">Log in</a>
+{% endif %}
 </nav>
