@@ -6,9 +6,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Super Books</title>
     <link rel="stylesheet" href="{% static 'books/css/bootstrap.min.css' %}"/>
-    {% block staticFile %} {% endblock %}
+    {% block staticCSS %} {% endblock %}
+    <script src="{% static 'books/js/zepto.min.js' %}"></script>
 </head>
 <body>
+<div class="container">
+<nav> 
+<h1>Super Books</h1>
+<div class="pull-right">
+    {% if user.is_authenticated %}
+    <span>Hi, {{ user.username }}</span> 
+    <a href="/libadmin/">Management</a>
+    <a href="/logout/">Log out</a>
+    {% else %}
+    <a href="/login/">Log in</a>
+    {% endif %}
+</div>
+</nav>
 {% block container %} {% endblock %}
+</div>
+{% block staticJS %} {% endblock %}
 </body>
 </html>

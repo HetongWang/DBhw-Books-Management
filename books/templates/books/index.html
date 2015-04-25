@@ -1,9 +1,13 @@
 {% extends "books/base.html" %}
+{% load staticfiles %}
 
 {% block container %}
-{% include "books/header.html" %}
 
 <input type="text" name="content" id="search-content" placeholder="Please type the book you want">
-<input type="submit" value="Search" id="search-submit"/>
+<button class="btn btn-default" id="search-submit">Search</button>
 
+{% endblock %}
+
+{% block staticJS %}
+<script src="{% static 'books/js/index.js' %}"></script>
 {% endblock %}

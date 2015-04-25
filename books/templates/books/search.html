@@ -1,7 +1,6 @@
 {% extends "books/base.html" %}
 
 {% block container %}
-{% include "books/header.html" %}
 {% if context.none %}
 	<ul>
 	{% for book in context.books %}
