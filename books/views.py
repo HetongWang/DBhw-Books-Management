@@ -109,7 +109,8 @@ def libadmin(request):
                     record.save()
                     context.push({'msg': 'borrowed successfully'})
                 else:
-                    record = models.Record.objects.get(book=book, card=card, return_time = None).ord_by[0]
+                    record = models.Record.objects.get(book=book, card=card, return_time = None).order_by('-borrow_time')[0]
+                    msg = 'Nearest Return time' + record.borrow_time
                     context.push({'msg': msg})
             except:
                 context.push({'msg': 'invalid book id'})
@@ -133,7 +134,7 @@ def libadmin(request):
                 card = models.Card.objects.get(card_id=data['card'])
                 record = models.Record.objects.get(card=card, return_time =None)
                 if record is None:
-                    Card.delete()
+                    card.delete()
                 else:
                     context.push({'msg':'This card holder has not returned all the books'})
 
@@ -144,7 +145,7 @@ def libadmin(request):
                 book = models.Books.objects.get(book_id=data['book'])
                 record = models.Record.objects.get(card=card, return_time =None)
                 if record is None:
-                    Books.delete()
+                    books.delete()
                 else:
                     context.push({'msg':'You cannot remove the book from the library, for there are copies remain un-returned'})
             except:
