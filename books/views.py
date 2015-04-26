@@ -128,3 +128,28 @@ def libadmin(request):
                     context.push({'msg': 'No record matched'})
             except:
                 context.push({'msg': 'No record marched'})
+        if data['action'] == 'delete_card':
+            try:
+                card = models.Card.objects.get(card_id=data['card'])
+                record = models.Record.objects.get(card=card, return_time =None)
+                if record is None:
+                    Card.delete()
+                else:
+                    context.push({'msg':'This card holder has not returned all the books'})
+
+            except:
+                context.push({'msg':'No card matched'})
+        if data['action'] == 'delete_book':
+            try：
+                book = models.Books.objects.get(book_id=data['book'])
+                record = models.Record.objects.get(card=card, return_time =None)
+                if record is None:
+                    Books.delete()
+                else:
+                    context.push({'msg':'You cannot remove the book from the library, for there are copies remain un-returned'})
+            except:
+                context.push({'msg':'No book matched'})
+
+
+
+
