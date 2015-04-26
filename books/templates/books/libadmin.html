@@ -19,12 +19,23 @@
 			<input type="text" name="book_name"/>	
 			<label>Category</label>
 			<input type="text" name="category"/>	
-			<label>Book Id</label>	
+			<label>Book ID</label>	
 			<input type="text" name="id"/>	
 			<label></label>
 		</form>
 	</div>
 	<div class="mng-tag" id="card-mng-tag">
+		<form action="{% url 'books:libadmin' %}?action=add_card">
+			<label>Card ID</label>
+			<input type='text' name="card_id">
+			<label>Borrowing Limit</label>
+			<input type='text' name="limit">
+			<label>Arrearage</label>
+			<input type='text' name="fare">
+			<label>Card Type</label>
+			<input type='text' name="card_type">
+		</form>
+	</div>
 	</div>
 	<div class="mng-tag" id="borrow-mng-tag">
 	</div>
