@@ -10,6 +10,7 @@
         <li><a href="javascript:void(0)" id="book-mng">Manage Books</a></li>
         <li><a href="javascript:void(0)" id="card-mng">Manage Card</a></li>
         <li><a href="javascript:void(0)" id="borrow-mng">Borrow & Return</a></li>
+        <li><a href="javascript:void(0)" id="return-mng">Borrow & Return</a></li>
     </ul>
 </div>
 <div class="col-md-9">
@@ -38,6 +39,24 @@
 	</div>
 	</div>
 	<div class="mng-tag" id="borrow-mng-tag">
+		<form action="{% url 'books:libadmin' %}?action=borrow_book">
+			<label>Book</label>
+			<input type='text' name="book_name">
+			<label>Card ID</label>
+			<input type='text' name="card">
+			<label>Borrow Time</label>
+			<input type='text' name="borrow_time">
+		</form>
+	</div>
+	<div class="mng-tag" id="return-mng-tag">
+		<form action="{% url 'books:libadmin' %}?action=return_book">
+			<label>Book</label>
+			<input type='text' name="book_name">
+			<label>Card ID</label>
+			<input type='text' name="card">
+			<label>Return Time</label>
+			<input type='text' name="return_time">
+		</form>
 	</div>
 </div>
 {% endblock %}
