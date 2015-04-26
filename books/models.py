@@ -22,7 +22,7 @@ class PublishCompany(models.Model):
         return self.name
 
 class Books(models.Model):
-    id = models.CharField(max_length=60, primary_key=True)
+    book_id = models.CharField(max_length=60, primary_key=True)
     category = models.CharField(max_length=60)
     name = models.CharField(max_length=60)
     pub_com = models.ForeignKey(PublishCompany)
@@ -42,7 +42,7 @@ class CardType(models.Model):
 class Card(models.Model):
     card_id = models.CharField(max_length=20, primary_key=True)
     limit = models.IntegerField(default=4)
-    fine = models.DecimalField(max_digits=10, decimal_places=2)
+    fare = models.DecimalField(max_digits=10, decimal_places=2)
     card_type = models.ForeignKey(CardType)
 
     def __str__(self):
@@ -52,6 +52,6 @@ class Record(models.Model):
     book = models.ForeignKey(Books)
     card = models.ForeignKey(Card)
     borrow_time = models.DateTimeField(auto_now_add=True)
-    return_time = models.DateTimeField()
+    return_time = models.DateTimeField(blank=True)
     admin = models.ForeignKey(Administrator)
 

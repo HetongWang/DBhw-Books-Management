@@ -4,6 +4,7 @@ from django.template import RequestContext, loader
 from django.contrib.auth import authenticate, login as djangoLogin, logout as djangoLogout
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.utils import timezone
 
 from . import models
 # Create your views here.
@@ -54,16 +55,24 @@ def libadmin(request):
             p = models.Author.objects.create(name=name)
         return p
 
+    def getCardType(name):
+        try:
+            p = models.CardType.objects.get(name=name)
+        except:
+            p = models.CardType.objects.create(name=name)
+        return p
+
+    context = RequestContext(request)
     if request.method == 'GET':
         if len(request.GET) == 0:
-            context = RequestContext(request)
-            return render(request, 'books/libadmin.html', {})
+            return render(request, 'books/libadmin.html', context)
     elif request.post == 'POST':
         data = request.POST
+
         if data['action'] == 'add_book':
-            newbook = Model.Books.objects.create(
+            newbook = models.Books.objects.create(
                 pub_com = getPublishCompany(data['pub_com']),
-                id = data['id'],
+                book_id = data['book_id'],
                 name = data['name'],
                 pub_year = data['pub_year'],
                 price = data['price'],
@@ -74,10 +83,47 @@ def libadmin(request):
             )
             if newbook is not None:
                 newbook.save()
+
         if data['action'] == 'add_card':
-            newcard = Model.Card.objects.create(
+            newcard = models.Card.objects.create(
                 card_id = data['card_id'],
                 limit = data['limit'],
-                
-                    )
+                fare = data['fare'],
+                card_type = getCardType(data['card_type'])
+            )
+            if newcard is not None:
+                newcard.save()
 
+        if data['action'] == 'borrow_book':
+            try:
+                book = models.Books.objects.get(book_id=data['book'])
+                card = models.Card.objects.get(card_id=data['card'])
+                if (book.left > 0):
+                    book.left -= 1
+                    book.save()
+                    record = models.Record.objects.create(
+                        book = book,
+                        card = card,
+                        admin = request.user.username
+                    )
+                    record.save()
+                    context.push({'msg': 'borrowed successfully'})
+                else:
+                    context.push({'msg': 'No book left'})
+            except:
+                context.push({'msg': 'invalid book id'})
+            
+        if data['action'] == 'return_book':
+            try:
+                book = models.Books.objects.get(book_id=data['book'])
+                card = models.Card.objects.get(card_id=data['card'])
+                record = models.Record.objects.get(book=book, card=card, return_time = None)[0]
+                if record is not None:
+                    record.return_time = timezone.now()
+                    record.save()
+                    book.left += 1
+                    book.save()
+                else:
+                    context.push({'msg': 'No record matched'})
+            except:
+                context.push({'msg': 'No record marched'})
