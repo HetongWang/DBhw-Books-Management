@@ -4,26 +4,29 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Super Books</title>
+    <title>Super Books</title>
     <link rel="stylesheet" href="{% static 'books/css/bootstrap.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'books/css/base.css' %}" >
     {% block staticCSS %} {% endblock %}
     <script src="{% static 'books/js/zepto.min.js' %}"></script>
 </head>
 <body>
 <div class="container">
-<nav> 
-<h1>Super Books</h1>
-<div class="pull-right">
-    {% if user.is_authenticated %}
-    <span>Hi, {{ user.username }}</span> 
-    <a href="/libadmin/">Management</a>
-    <a href="/logout/">Log out</a>
-    {% else %}
-    <a href="/login/">Log in</a>
-    {% endif %}
-</div>
-</nav>
-{% block container %} {% endblock %}
+    <nav class="nav" id="header"> 
+        <h1 class="col-md-9">Super Books</h1>
+        <div id="nav-status" class="navbar-right col-md-3">
+            {% if user.is_authenticated %}
+            <span>Hi, {{ user.username }}</span> 
+            <a href="/libadmin/">Management</a>
+            <a href="/logout/">Log out</a>
+            {% else %}
+            <a href="/login/">Log in</a>
+            {% endif %}
+        </div>
+    </nav>
+    <div class="container">
+        {% block container %} {% endblock %}
+    </div>
 </div>
 {% block staticJS %} {% endblock %}
 </body>

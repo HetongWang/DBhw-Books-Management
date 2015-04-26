@@ -1,5 +1,35 @@
-{% extends "books/base.html"}
+{% extends "books/base.html" %}
+{% load staticfiles %}
 
+{% block staticCSS %}
+<link rel="stylesheet" href="{% static 'books/css/libadmin.css' %}"/>
+{% endblock %}
 {% block container %}
-
+<div id="side-bar" class="col-md-3">
+    <ul class="nav">
+        <li><a href="javascript:void(0)" id="book-mng">Manage Books</a></li>
+        <li><a href="javascript:void(0)" id="card-mng">Manage Card</a></li>
+        <li><a href="javascript:void(0)" id="borrow-mng">Borrow & Return</a></li>
+    </ul>
+</div>
+<div class="col-md-9">
+	<div class="mng-tag" id="books-mng-tag">
+		<form action="{% url 'books:libadmin' %}?action=add_book">
+			<label>Book Name</label>
+			<input type="text" name="book_name"/>	
+			<label>Category</label>
+			<input type="text" name="category"/>	
+			<label>Book Id</label>	
+			<input type="text" name="id"/>	
+			<label></label>
+		</form>
+	</div>
+	<div class="mng-tag" id="card-mng-tag">
+	</div>
+	<div class="mng-tag" id="borrow-mng-tag">
+	</div>
+</div>
+{% endblock %}
+{% block staticJS %}
+<script src="{% static 'books/js/libadmin.js' %}"></script>
 {% endblock %}
