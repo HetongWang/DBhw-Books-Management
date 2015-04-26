@@ -2,6 +2,10 @@
 	padding-left: 0;
 }
 
-.mng-tag {
+.hidden {
 	display: none;
+}
+
+.active-tag {
+	background-color: #eee;
 }

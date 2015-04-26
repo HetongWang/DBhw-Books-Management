@@ -1,3 +1,4 @@
+import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import RequestContext, loader
@@ -38,7 +39,7 @@ def loginConfirm(request):
     else:
         return render(request, 'books/login.html', {'msg': 'invalid username or password'})
 
-@login_required(login_url='login/')
+@login_required(login_url='/login/')
 def libadmin(request):
     
     def getPublishCompany(name):
@@ -66,8 +67,9 @@ def libadmin(request):
     if request.method == 'GET':
         if len(request.GET) == 0:
             return render(request, 'books/libadmin.html', context)
+
     elif request.post == 'POST':
-        data = request.POST
+        data = request.body
 
         if data['action'] == 'add_book':
             newbook = models.Books.objects.create(
@@ -129,10 +131,11 @@ def libadmin(request):
                     context.push({'msg': 'No record matched'})
             except:
                 context.push({'msg': 'No record marched'})
+
         if data['action'] == 'delete_card':
             try:
                 card = models.Card.objects.get(card_id=data['card'])
-                record = models.Record.objects.get(card=card, return_time =None)
+                record = models.Record.objects.get(card=card, return_time = None)
                 if record is None:
                     card.delete()
                 else:
@@ -140,17 +143,18 @@ def libadmin(request):
 
             except:
                 context.push({'msg':'No card matched'})
+
         if data['action'] == 'delete_book':
-            try：
+            try:
                 book = models.Books.objects.get(book_id=data['book'])
-                record = models.Record.objects.get(card=card, return_time =None)
+                record = models.Record.objects.get(card=card, return_time = None)
                 if record is None:
                     books.delete()
                 else:
                     context.push({'msg':'You cannot remove the book from the library, for there are copies remain un-returned'})
             except:
                 context.push({'msg':'No book matched'})
-
-
-
+ 
+        jsondata = json.dumps(context)
+        return HttpResponse(jsondata, mimetype="application/json")
 
