@@ -42,7 +42,7 @@ class CardType(models.Model):
 class Card(models.Model):
     card_id = models.CharField(max_length=20, primary_key=True)
     limit = models.IntegerField(default=4)
-    fare = models.DecimalField(max_digits=10, decimal_places=2)
+    fare = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     card_type = models.ForeignKey(CardType)
 
     def __str__(self):

@@ -109,7 +109,8 @@ def libadmin(request):
                     record.save()
                     context.push({'msg': 'borrowed successfully'})
                 else:
-                    context.push({'msg': 'No book left'})
+                    record = models.Record.objects.get(book=book, card=card, return_time = None).ord_by[0]
+                    context.push({'msg': msg})
             except:
                 context.push({'msg': 'invalid book id'})
             
