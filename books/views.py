@@ -5,8 +5,7 @@ from django.contrib.auth import authenticate, login as djangoLogin, logout as dj
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 
-import models
-
+from . import models
 # Create your views here.
 def index(request):
     context = RequestContext(request)
