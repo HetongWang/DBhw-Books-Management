@@ -16,12 +16,21 @@
 	<div class="mng-tag" id="books-mng-tag">
 		<form action="{% url 'books:libadmin' %}?action=add_book">
 			<label>Book Name</label>
-			<input type="text" name="book_name"/>	
+			<input type="text" name="name"/>	
 			<label>Category</label>
 			<input type="text" name="category"/>	
 			<label>Book Id</label>	
 			<input type="text" name="id"/>	
-			<label></label>
+			<label>Publish Company</label>
+			<input type="text" name="pub_com"/>	
+			<label>Publish Year</label>
+			<input type="text" name="pub_year"/>
+			<label>Author</label>
+			<input type="text" name="author"/>
+			<label>Price</label>
+			<input type="text" name="pirce"/>	
+			<label>amount</label>
+			<input type="text" name="amount"/>
 		</form>
 	</div>
 	<div class="mng-tag" id="card-mng-tag">
