@@ -14,9 +14,9 @@ $(function() {
     });
     $('form').submit(function(event) {
         event.preventDefault();
-        var _id = $(this).parent()[0].id.replace('mng', 'book')
+        var _id = $(this).parent()[0].id
         var action = _id.match(/(\w+)-(\w+)-tag/);
-        action = action[2] + '_' + action[1];
+        action = action[1] + '_' + action[2];
 
         var data = {'action': action};
         inputs = $(this).find('input');

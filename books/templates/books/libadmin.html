@@ -7,18 +7,19 @@
 {% block container %}
 <div id="side-bar" class="col-md-3">
     <ul class="nav">
-        <li><a class="side-bar-tag" href="javascript:void(0)" id="book-add">Add Books</a></li>
-        <li><a class="side-bar-tag" href="javascript:void(0)" id="book-del">Delete Books</a></li>
-        <li><a class="side-bar-tag" href="javascript:void(0)" id="card-add">Add Card</a></li>
-        <li><a class="side-bar-tag" href="javascript:void(0)" id="card-del">Delete Card</a></li>
-        <li><a class="side-bar-tag" href="javascript:void(0)" id="borrow-mng">Borrow</a></li>
-        <li><a class="side-bar-tag" href="javascript:void(0)" id="return-mng">Return</a></li>
+        <li><a class="side-bar-tag" href="javascript:void(0)" id="add-book">Add Books</a></li>
+        <li><a class="side-bar-tag" href="javascript:void(0)" id="del-book">Delete Books</a></li>
+        <li><a class="side-bar-tag" href="javascript:void(0)" id="add-card">Add Card</a></li>
+        <li><a class="side-bar-tag" href="javascript:void(0)" id="del-card">Delete Card</a></li>
+        <li><a class="side-bar-tag" href="javascript:void(0)" id="book-borrow">Borrow</a></li>
+        <li><a class="side-bar-tag" href="javascript:void(0)" id="book-return">Return</a></li>
+        <li><a class="side-bar-tag" href="javascript:void(0)" id="book-file">Add Book by CSV</a></li>
     </ul>
 </div>
 <div class="col-md-9">
 	<div id="message" class="alert alert-danger hidden" role="alert">
 	</div>
-	<div class="mng-tag hidden" id="book-add-tag">
+	<div class="mng-tag hidden" id="add-book-tag">
 		<form class="form-horizontal">
 			<div class="form-group">
 			<label class="col-md-3 control-label">Book ID</label>
@@ -68,10 +69,10 @@
 			<input class="form-control" type="text" name="amount" required/>
 			</div>
 			</div>
-			<button type="submit" id="book-add-submit" class="btn btn-primary pull-right">Submit</button>
+			<button type="submit" id="add-book-submit" class="btn btn-primary pull-right">Submit</button>
 		</form>
 	</div>
-	<div class="mng-tag hidden" id="book-del-tag">
+	<div class="mng-tag hidden" id="del-book-tag">
 		<form class="form-horizontal">
 			<div class="form-group">
 			<label class="col-md-3 control-label">Book ID</label>	
@@ -79,10 +80,10 @@
 			<input class="form-control" type="text" name="book_id" required/>	
 			</div>
 			</div>
-			<button type="submit" id="book-del-submit" class="btn btn-primary pull-right">Submit</button>
+			<button type="submit" id="del-book-submit" class="btn btn-primary pull-right">Submit</button>
 		</form>
 	</div>
-	<div class="mng-tag hidden" id="card-del-tag">
+	<div class="mng-tag hidden" id="del-card-tag">
 		<form class="form-horizontal">
 			<div class="form-group">
 			<label class="col-md-3 control-label">Card ID</label>
@@ -90,10 +91,10 @@
 			<input class="form-control" type='text' name="card_id" required/>
 			</div>
 			</div>
-			<button type="submit" id="card-del-submit" class="btn btn-primary pull-right">Submit</button>
+			<button type="submit" id="del-card-submit" class="btn btn-primary pull-right">Submit</button>
 		</form>
 	</div>
-	<div class="mng-tag hidden" id="card-add-tag">
+	<div class="mng-tag hidden" id="add-card-tag">
 		<form class="form-horizontal">
 			<div class="form-group">
 			<label class="col-md-3 control-label">Card ID</label>
@@ -113,10 +114,10 @@
 			<input class="form-control" type='text' name="card_type" required/>
 			</div>
 			</div>
-			<button type="submit" id="card-add-submit" class="btn btn-primary pull-right">Submit</button>
+			<button type="submit" id="add-card-submit" class="btn btn-primary pull-right">Submit</button>
 		</form>
 	</div>
-	<div class="mng-tag hidden" id="borrow-mng-tag">
+	<div class="mng-tag hidden" id="book-borrow-tag">
 		<form class="form-horizontal">
 		<div class="form-group">
 			<label class="col-md-3 control-label">Book</label>
@@ -136,10 +137,10 @@
 			<input class="form-control" type='text' name="borrow_time" required/>
 			</div>
 			</div>
-			<button type="submit" id="borrow-mng-submit" class="btn btn-primary pull-right">Submit</button>
+			<button type="submit" id="book-borrow-submit" class="btn btn-primary pull-right">Submit</button>
 		</form>
 	</div>
-	<div class="mng-tag hidden" id="return-mng-tag">
+	<div class="mng-tag hidden" id="book-return-tag">
 		<form class="form-horizontal">
 		<div class="form-group">
 			<label class="col-md-3 control-label">Book</label>
@@ -153,13 +154,18 @@
 			<input class="form-control" type='text' name="card" required/>
 			</div>
 			</div>
+			<button type="submit" id="book-return-submit" class="btn btn-primary pull-right">Submit</button>
+		</form>
+	</div>
+	<div class="mng-tag hidden" id="book-file-tag">
+		<form class="form-horizontal">
 			<div class="form-group">
-			<label class="col-md-3 control-label">Return Time</label>
+			<label class="col-md-3 control-label">CSV File</label>
 			<div class="col-md-9">
-			<input class="form-control" type='text' name="return_time" required/>
+			<input class="form-control" type='file' name="file" required/>
 			</div>
 			</div>
-			<button type="submit" id="return-mng-submit" class="btn btn-primary pull-right">Submit</button>
+			<button type="submit" id="book-file-submit" class="btn btn-primary pull-right">Submit</button>
 		</form>
 	</div>
 </div>
