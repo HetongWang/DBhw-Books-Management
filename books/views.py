@@ -1,7 +1,7 @@
 import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from django.template import RequestContext, loader
+from django.template import RequestContext
 from django.contrib.auth import authenticate, login as djangoLogin, logout as djangoLogout
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
@@ -9,28 +9,34 @@ from django.utils import timezone
 
 from books import models
 # Create your views here.
+
+
 def index(request):
     context = RequestContext(request)
     return render(request, 'books/index.html', context)
+
 
 def search(request, content):
     context = RequestContext(request)
     try:
         books = models.Books.objects.get(name=content)
-        if (type(books) is list) == False:
+        if not (type(books) is list):
             books = [books]
         context.push({'books': books})
     except:
         context.push({'none': True})
     return render(request, 'books/search.html', context)
 
+
 def login(request):
     return render(request, 'books/login.html', {})
+
 
 def logout(request):
     if request.user.is_authenticated():
         djangoLogout(request)
     return HttpResponseRedirect(reverse('books:index'))
+
 
 def loginConfirm(request):
     username = request.POST['username']
@@ -41,6 +47,7 @@ def loginConfirm(request):
         return HttpResponseRedirect(reverse('books:index'))
     else:
         return render(request, 'books/login.html', {'msg': 'invalid username or password'})
+
 
 @login_required(login_url='/login/')
 def libadmin(request):
@@ -83,33 +90,40 @@ def libadmin(request):
     elif request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
         if data['action'] == 'add_book':
-            newbook = models.Books.objects.create(
-                pub_com = getPublishCompany(data['pub_com']),
-                book_id = data['book_id'],
-                name = data['name'],
-                pub_year = data['pub_year'],
-                price = data['price'],
-                amount = data['amount'],
-                left = data['amount'],
-                category = data['category'],
-                author = getAuthor(data['author'])
-            )
-            if newbook is not None:
-                newbook.save()
-            else:
-                opError('Add Book Failed, Please Check if card is conflict')
+            try:
+                newbook = models.Books.objects.create(
+                    pub_com = getPublishCompany(data['pub_com']),
+                    book_id = data['book_id'],
+                    name = data['name'],
+                    pub_year = data['pub_year'],
+                    price = data['price'],
+                    amount = data['amount'],
+                    left = data['amount'],
+                    category = data['category'],
+                    author = getAuthor(data['author'])
+                )
+                if newbook is not None:
+                    newbook.save()
+                    return HttpResponse('True')
+                else:
+                    opError('Add Book Failed, Please Check if card is conflict')
+            except Exception as e:
+                opError(e)
 
         if data['action'] == 'add_card':
-            newcard = models.Card.objects.create(
-                card_id = data['card_id'],
-                limit = data['limit'],
-                fare = data['fare'],
-                card_type = getCardType(data['card_type'])
-            )
-            if newcard is not None:
-                newcard.save()
-            else:
-                opError('Add Card Failed, Please Check if card is conflict')
+            try:
+                newcard = models.Card.objects.create(
+                    card_id = data['card_id'],
+                    limit = data['limit'],
+                    fare = data['fare'],
+                    card_type = getCardType(data['card_type'])
+                )
+                if newcard is not None:
+                    newcard.save()
+                else:
+                    opError('Add Card Failed, Please Check if card is conflict')
+            except Exception as e:
+                opError(e)
 
         if data['action'] == 'book_borrow':
             try:
@@ -167,7 +181,7 @@ def libadmin(request):
                     opError('You cannot remove the book from the library, for there are copies remain un-returned')
             except:
                 opError('No book matched')
- 
+
         jsondata = json.dumps(context)
         return HttpResponse(jsondata, content_type="application/json")
 
