@@ -1,12 +1,19 @@
 {% extends "books/base.html" %}
 {% load staticfiles %}
 
+{% block staticCSS %}
+<link rel="stylesheet" href="{% static 'books/css/index.css' %}"/>
+{% endblock %}
+
 {% block container %}
 <div id="message" class="alert alert-danger" role="alert" style="display: none;"></div>
 
-<input type="text" name="content" id="search-content" placeholder="Please type the book you want">
-<button class="btn btn-default" id="search-submit">Search</button>
-
+<form class="form-inline">
+	<div class="form-group">
+		<input type="text" class="form-control" name="content" id="search-content" placeholder="Please type the book you want">
+	</div>
+	<button type="submit" class="btn btn-primary" id="search-submit">Search</button>
+</form>
 {% endblock %}
 
 {% block staticJS %}

@@ -7,8 +7,19 @@
 
 {% block container %}
 {% if none %}
-    <p>No book matches</p>
+    <div id="message" class="alert alert-danger" role="alert">Oh, No book matched</div>
 {% else %}
+	<div id="message" class="alert alert-danger" role="alert" style="display: none;"></div>
+{% endif %}
+
+<form class="form-inline">
+	<div class="form-group">
+		<input type="text" class="form-control" name="content" id="search-content" placeholder="Please type the book you want">
+	</div>
+	<button type="submit" class="btn btn-primary" id="search-submit">Search</button>
+</form>
+
+{% if not none %}
 	<ul id="info" class="nav">
 	{% for book in books %}
 	    <li class="search-item">
@@ -23,4 +34,16 @@
 	{% endfor %}
 	</ul>
 {% endif %}
+<script type="text/javascript">
+$(function() {
+    $('#search-submit').bind('click', function(e) {
+    	e.preventDefault();
+		var search_content = $('#search-content').val();
+		if (search_content == '')
+			$('#message').text('You have to type something').css('display', 'block');
+		else
+	        window.location = '/search/' + search_content
+    });
+});
+</script>
 {% endblock %}

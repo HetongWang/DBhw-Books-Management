@@ -6,3 +6,15 @@
 	padding-top: 30px;
 	padding-left: 65px;
 }
+
+a {
+	color: #777;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+#search-content {
+	width: 500px;
+}
