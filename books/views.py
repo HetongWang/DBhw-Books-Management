@@ -115,7 +115,6 @@ def libadmin(request):
                 newcard = models.Card.objects.create(
                     card_id = data['card_id'],
                     limit = data['limit'],
-                    fare = data['fare'],
                     card_type = getCardType(data['card_type'])
                 )
                 if newcard is not None:
