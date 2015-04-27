@@ -161,9 +161,10 @@ def libadmin(request):
 
         if data['action'] == 'del_card':
             try:
-                card = models.Card.objects.get(card_id=data['card'])
-                record = models.Record.objects.get(card=card, return_time = None)
-                if record is None:
+                card = models.Card.objects.get(card_id=data['card_id'])
+                try:
+                    record = models.Record.objects.get(card=card, return_time = None)
+                except:
                     card.delete()
                 else:
                     opError('This card holder has not returned all the books')
