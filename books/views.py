@@ -44,6 +44,10 @@ def loginConfirm(request):
 
 @login_required(login_url='/login/')
 def libadmin(request):
+    context = {
+        'msg': '',
+        'err': False
+    }
     
     def getPublishCompany(name):
         try:
@@ -66,6 +70,11 @@ def libadmin(request):
             p = models.CardType.objects.create(name=name)
         return p
 
+    def opError(msg=''):
+        context['msg'] = msg
+        context['err'] = True
+
+
     if request.method == 'GET':
         if len(request.GET) == 0:
             context = RequestContext(request)
@@ -73,7 +82,6 @@ def libadmin(request):
 
     elif request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
-        context = {}
         if data['action'] == 'add_book':
             newbook = models.Books.objects.create(
                 pub_com = getPublishCompany(data['pub_com']),
@@ -88,6 +96,8 @@ def libadmin(request):
             )
             if newbook is not None:
                 newbook.save()
+            else:
+                opError('Add Book Failed, Please Check if card is conflict')
 
         if data['action'] == 'add_card':
             newcard = models.Card.objects.create(
@@ -98,6 +108,8 @@ def libadmin(request):
             )
             if newcard is not None:
                 newcard.save()
+            else:
+                opError('Add Card Failed, Please Check if card is conflict')
 
         if data['action'] == 'book_borrow':
             try:
@@ -112,13 +124,12 @@ def libadmin(request):
                         admin = request.user.username
                     )
                     record.save()
-                    context['msg'] = 'borrowed successfully'
                 else:
                     record = models.Record.objects.get(book=book, card=card, return_time = None).order_by('-borrow_time')[0]
                     msg = 'Nearest Return time' + record.borrow_time
-                    context['msg'] = msg
+                    opError(msg)
             except:
-                context['msg'] = 'invalid book id'
+                opError('Invalid Book Id')
             
         if data['action'] == 'book_return':
             try:
@@ -131,9 +142,9 @@ def libadmin(request):
                     book.left += 1
                     book.save()
                 else:
-                    context['msg'] = 'No record matched'
+                    opError('No record matched')
             except:
-                context['msg'] = 'No record marched'
+                opError('No record marched')
 
         if data['action'] == 'del_card':
             try:
@@ -142,9 +153,9 @@ def libadmin(request):
                 if record is None:
                     card.delete()
                 else:
-                    context['msg'] = 'This card holder has not returned all the books'
+                    opError('This card holder has not returned all the books')
             except:
-                context['msg'] ='No card matched'
+                opError('No card matched')
 
         if data['action'] == 'del_book':
             try:
@@ -153,9 +164,9 @@ def libadmin(request):
                 if record is None:
                     books.delete()
                 else:
-                    context['msg'] = 'You cannot remove the book from the library, for there are copies remain un-returned'
+                    opError('You cannot remove the book from the library, for there are copies remain un-returned')
             except:
-                context['msg'] = 'No book matched'
+                opError('No book matched')
  
         jsondata = json.dumps(context)
         return HttpResponse(jsondata, content_type="application/json")
