@@ -108,7 +108,7 @@ def libadmin(request):
                 else:
                     opError('Add Book Failed, Please Check if card is conflict')
             except Exception as e:
-                opError(e)
+                opError(str(e))
 
         if data['action'] == 'add_card':
             try:
@@ -123,7 +123,7 @@ def libadmin(request):
                 else:
                     opError('Add Card Failed, Please Check if card is conflict')
             except Exception as e:
-                opError(e)
+                opError(str(e))
 
         if data['action'] == 'book_borrow':
             try:

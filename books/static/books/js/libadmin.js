@@ -38,18 +38,18 @@ $(function() {
             },
             success: function(data, status, xhr) {
                 if (data.err == false)
-                    $('#message').removeClass(['alert-danger', 'hidden'])
+                    $('#message').removeClass('alert-danger hidden')
                                  .addClass('alert-success')
                                  .text('Operate Successfully');
                 else
                     $('#message').removeClass('alert-success hidden')
                                  .addClass('alert-danger')
-                                 .text(data.msg);
+                                 .html('<b>Error: </b>' + data.msg);
             },
             error: function(xhr, errorType, error) {
-                $('#message').removeClass(['alert-success', 'hidden'])
+                $('#message').removeClass('alert-success hidden')
                              .addClass('alert-danger')
-                             .text('Unexcept error, please check input');
+                             .html('<b>Error: </b>' + 'Unexcept error, please check input');
             }
         });
     });
