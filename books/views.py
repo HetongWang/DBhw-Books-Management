@@ -175,7 +175,7 @@ def libadmin(request):
                 book = models.Books.objects.get(book_id=data['book'])
                 record = models.Record.objects.get(card=card, return_time = None)
                 if record is None:
-                    books.delete()
+                    book.delete()
                 else:
                     opError('You cannot remove the book from the library, for there are copies remain un-returned')
             except:
