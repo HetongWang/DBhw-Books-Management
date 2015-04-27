@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 
-from . import models
+from books import models
 # Create your views here.
 def index(request):
     context = RequestContext(request)
@@ -16,9 +16,12 @@ def index(request):
 def search(request, content):
     context = RequestContext(request)
     try:
-        context['books'] = models.Books.objects.get(name=content)
+        books = models.Books.objects.get(name=content)
+        if (type(books) is list) == False:
+            books = [books]
+        context.push({'books': books})
     except:
-        context['none'] = True
+        context.push({'none': True})
     return render(request, 'books/search.html', context)
 
 def login(request):
@@ -63,14 +66,14 @@ def libadmin(request):
             p = models.CardType.objects.create(name=name)
         return p
 
-    context = RequestContext(request)
     if request.method == 'GET':
         if len(request.GET) == 0:
+            context = RequestContext(request)
             return render(request, 'books/libadmin.html', context)
 
-    elif request.post == 'POST':
-        data = request.body
-
+    elif request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        context = {}
         if data['action'] == 'add_book':
             newbook = models.Books.objects.create(
                 pub_com = getPublishCompany(data['pub_com']),
@@ -96,7 +99,7 @@ def libadmin(request):
             if newcard is not None:
                 newcard.save()
 
-        if data['action'] == 'borrow_book':
+        if data['action'] == 'book_borrow':
             try:
                 book = models.Books.objects.get(book_id=data['book'])
                 card = models.Card.objects.get(card_id=data['card'])
@@ -109,15 +112,15 @@ def libadmin(request):
                         admin = request.user.username
                     )
                     record.save()
-                    context.push({'msg': 'borrowed successfully'})
+                    context['msg'] = 'borrowed successfully'
                 else:
                     record = models.Record.objects.get(book=book, card=card, return_time = None).order_by('-borrow_time')[0]
                     msg = 'Nearest Return time' + record.borrow_time
-                    context.push({'msg': msg})
+                    context['msg'] = msg
             except:
-                context.push({'msg': 'invalid book id'})
+                context['msg'] = 'invalid book id'
             
-        if data['action'] == 'return_book':
+        if data['action'] == 'book_return':
             try:
                 book = models.Books.objects.get(book_id=data['book'])
                 card = models.Card.objects.get(card_id=data['card'])
@@ -128,33 +131,32 @@ def libadmin(request):
                     book.left += 1
                     book.save()
                 else:
-                    context.push({'msg': 'No record matched'})
+                    context['msg'] = 'No record matched'
             except:
-                context.push({'msg': 'No record marched'})
+                context['msg'] = 'No record marched'
 
-        if data['action'] == 'delete_card':
+        if data['action'] == 'del_card':
             try:
                 card = models.Card.objects.get(card_id=data['card'])
                 record = models.Record.objects.get(card=card, return_time = None)
                 if record is None:
                     card.delete()
                 else:
-                    context.push({'msg':'This card holder has not returned all the books'})
-
+                    context['msg'] = 'This card holder has not returned all the books'
             except:
-                context.push({'msg':'No card matched'})
+                context['msg'] ='No card matched'
 
-        if data['action'] == 'delete_book':
+        if data['action'] == 'del_book':
             try:
                 book = models.Books.objects.get(book_id=data['book'])
                 record = models.Record.objects.get(card=card, return_time = None)
                 if record is None:
                     books.delete()
                 else:
-                    context.push({'msg':'You cannot remove the book from the library, for there are copies remain un-returned'})
+                    context['msg'] = 'You cannot remove the book from the library, for there are copies remain un-returned'
             except:
-                context.push({'msg':'No book matched'})
+                context['msg'] = 'No book matched'
  
         jsondata = json.dumps(context)
-        return HttpResponse(jsondata, mimetype="application/json")
+        return HttpResponse(jsondata, content_type="application/json")
 

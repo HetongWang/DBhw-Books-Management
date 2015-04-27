@@ -14,7 +14,7 @@
 <div class="container">
     <nav class="nav" id="header"> 
         <h1 class="col-md-9">Super Books</h1>
-        <div id="nav-status" class="navbar-right col-md-3">
+        <div id="header-status" class="navbar-right col-md-3">
             {% if user.is_authenticated %}
             <span>Hi, {{ user.username }}</span> 
             <a href="/libadmin/">Management</a>
@@ -24,7 +24,7 @@
             {% endif %}
         </div>
     </nav>
-    <div class="container">
+    <div class="col-md-12">
         {% block container %} {% endblock %}
     </div>
 </div>

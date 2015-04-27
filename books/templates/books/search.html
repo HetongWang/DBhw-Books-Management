@@ -1,13 +1,26 @@
 {% extends "books/base.html" %}
+{% load staticfiles %}
+
+{% block staticCSS %}
+<link rel="stylesheet" href="{% static 'books/css/search.css' %}"/>
+{% endblock %}
 
 {% block container %}
-{% if context.none %}
-	<ul>
-	{% for book in context.books %}
-	    <li>{{ book.name }}</li>
+{% if none %}
+    <p>No book matches</p>
+{% else %}
+	<ul id="info" class="nav">
+	{% for book in books %}
+	    <li class="search-item">
+	    	<span class="book-id">{{ book.book_id }}</span>
+	    	<span class="book-category">{{ book.category }}</span>
+	    	<span class="book-name">{{ book.name }}</span>
+	    	<span class="book-pub-com">{{ book.pub_com }}</span>
+	    	<span class="book-pub-year">{{ book.pub_year }}</span>
+	    	<span class="book-author">{{ book.author }}</span>
+	    	<span class="book-price">{{ book.price }}</span>
+	    </li>
 	{% endfor %}
 	</ul>
-{% else %}
-    <p>No book matches</p>
 {% endif %}
 {% endblock %}
