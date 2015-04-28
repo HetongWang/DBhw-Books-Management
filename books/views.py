@@ -104,7 +104,6 @@ def libadmin(request):
                 )
                 if newbook is not None:
                     newbook.save()
-                    return HttpResponse('True')
                 else:
                     opError('Add Book Failed, Please Check if card is conflict')
             except Exception as e:
