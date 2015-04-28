@@ -47,3 +47,6 @@
 #info .search-item .book-price:before {
   content: "Price";
 }
+#info .search-item .book-left:before {
+  content: "Left";
+}

@@ -37,6 +37,7 @@ class Books(models.Model):
 
     def save(self, *args, **kwargs):
         self.search = self.book_id + ' ' + self.name + ' ' + self.category + ' ' + self.pub_com.name + ' ' + self.author.name + ' '
+        self.left = self.amount
         super(Books, self).save(*args, **kwargs)
 
     def __str__(self):
