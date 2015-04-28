@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Administrator(models.Model):
     user = models.OneToOneField(User)
-    create_time = models.DateTimeField()
+    create_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.user.name
@@ -37,7 +37,8 @@ class Books(models.Model):
 
     def save(self, *args, **kwargs):
         self.search = self.book_id + ' ' + self.name + ' ' + self.category + ' ' + self.pub_com.name + ' ' + self.author.name + ' '
-        self.left = self.amount
+        if self.left is None:
+            self.left = self.amount
         super(Books, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -62,6 +63,6 @@ class Record(models.Model):
     book = models.ForeignKey(Books)
     card = models.ForeignKey(Card)
     borrow_time = models.DateTimeField(auto_now_add=True)
-    return_time = models.DateTimeField(blank=True)
-    admin = models.ForeignKey(Administrator)
+    return_time = models.DateTimeField(null=True)
+    admin = models.ForeignKey(User)
 

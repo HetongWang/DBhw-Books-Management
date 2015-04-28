@@ -7,7 +7,7 @@ from .models import Books, Card, Author, PublishCompany, Administrator, Record
 class AdminInline(admin.StackedInline):
     model = Administrator
     can_delete = False
-    fields = ['create_time']
+    fields = ['user']
 
 class UserAdmin(admin.ModelAdmin):
     inlines = [AdminInline]

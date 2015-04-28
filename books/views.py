@@ -1,4 +1,5 @@
 import json
+import datetime
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import RequestContext
@@ -91,10 +92,6 @@ def libadmin(request):
         data = json.loads(request.body.decode('utf-8'))
         if data['action'] == 'add_book':
             try:
-                search = ''
-                for key in data:
-                    if key != 'action':
-                        search += data[key] + ' '
                 newbook = models.Books.objects.create(
                     pub_com = getPublishCompany(data['pub_com']),
                     book_id = data['book_id'],
@@ -129,38 +126,41 @@ def libadmin(request):
 
         if data['action'] == 'book_borrow':
             try:
-                book = models.Books.objects.get(book_id=data['book'])
-                card = models.Card.objects.get(card_id=data['card'])
-                if (book.left > 0):
+                book = models.Books.objects.get(book_id=data['book_id'])
+                card = models.Card.objects.get(card_id=data['card_id'])
+                if book.left > 0:
                     book.left -= 1
                     book.save()
                     record = models.Record.objects.create(
                         book = book,
                         card = card,
-                        admin = request.user.username
+                        admin = request.user
                     )
                     record.save()
                 else:
-                    record = models.Record.objects.get(book=book, card=card, return_time = None).order_by('-borrow_time')[0]
-                    msg = 'Nearest Return time' + record.borrow_time
+                    record = models.Record.objects.get(book=book, card=card, return_time = None)
+                    if type(record) is list:
+                        record = record.order_by('-borrow_time')[0]
+                    msg = 'No book Left, Nearest Return time:' + (record.borrow_time + datetime.timedelta(days=40)).strftime("%y-%m-%d")
                     opError(msg)
-            except:
-                opError('Invalid Book Id')
+            except Exception as e:
+                opError(str(e))
+                # opError('Invalid Book Id or Card Id')
             
         if data['action'] == 'book_return':
             try:
-                book = models.Books.objects.get(book_id=data['book'])
-                card = models.Card.objects.get(card_id=data['card'])
-                record = models.Record.objects.get(book=book, card=card, return_time = None)[0]
-                if record is not None:
-                    record.return_time = timezone.now()
-                    record.save()
-                    book.left += 1
-                    book.save()
-                else:
-                    opError('No record matched')
-            except:
-                opError('No record marched')
+                book = models.Books.objects.get(book_id=data['book_id'])
+                card = models.Card.objects.get(card_id=data['card_id'])
+                record = models.Record.objects.get(book=book, card=card, return_time = None)
+                if type(record) is list:
+                    record = record[0]
+
+                record.return_time = timezone.now()
+                record.save()
+                book.left += 1
+                book.save()
+            except Exception as e:
+                opError(str(e))
 
         if data['action'] == 'del_card':
             try:
