@@ -51,7 +51,7 @@ $(function() {
         inputs = $(this).find('input');
         for (var i = inputs.length - 1; i >= 0; i--) {
             data[inputs[i].name] = $(inputs[i]).val();
-        }; 
+        };  
         var csrftoken = getcsrftoken();
 
         $.ajax({
@@ -84,7 +84,7 @@ $(function() {
             postmsg(false, 'Please typte standard JSON');
         }
         if (jsondata !== undefined) {
-            if (typeof jsondata == 'object')
+            if (Object.prototype.toString.call(a) === '[object Array]')
                 jsondata = [jsondata];
 
             for (var i = 0; i < jsondata.length; i++) {

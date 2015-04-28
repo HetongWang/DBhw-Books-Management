@@ -13,7 +13,7 @@
         <li><a class="side-bar-tag" href="javascript:void(0)" id="del-card">Delete Card</a></li>
         <li><a class="side-bar-tag" href="javascript:void(0)" id="book-borrow">Borrow</a></li>
         <li><a class="side-bar-tag" href="javascript:void(0)" id="book-return">Return</a></li>
-        <li><a class="side-bar-tag" href="javascript:void(0)" id="book-file">Add Book by JSON</a></li>
+        <li><a class="side-bar-tag" href="javascript:void(0)" id="book-file">Operate by JSON</a></li>
     </ul>
 </div>
 <div id="op-field" class="col-md-9">
@@ -152,7 +152,23 @@
 	<div class="mng-tag hidden" id="book-file-tag">
 		<form>
 			<div class="form-group">
-			<label class="control-label" for="file">JSON Text</label>
+			<h4 style="margin-bottom: 1em;">Usage:</h4>
+			<div class="col-md-3">
+				<p>Add Book: </p>
+				<p>Delete Book:</p>
+			</div>
+			<div class="col-md-3">
+				<p><code>add_book</code></p>
+				<p><code>del_book</code></p>
+			</div>
+			<div class="col-md-3">
+				<p>Add Card: </p>
+				<p>Delete Card:</p>
+			</div>
+			<div class="col-md-3">
+				<p><code>add_card</code></p>
+				<p><code>del_card</code></p>
+			</div>
 			<textarea class="form-control" name="file" rows="5" placeholder="Please type standard JSON string" required>Example: {"action":"add_book","amount":"2","price":"1","author":"asdf","pub_year":"asdf","pub_com":"asdf","name":"asdf","category":"asdf","book_id":"asdfasdf"}</textarea>
 			</div>
 			<button type="submit" id="book-file-submit" class="btn btn-primary pull-right">Submit</button>
