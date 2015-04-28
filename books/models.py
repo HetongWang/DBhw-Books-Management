@@ -33,6 +33,12 @@ class Books(models.Model):
     amount = models.IntegerField(default=1)
     left = models.IntegerField()
 
+    search = models.TextField(default='')
+
+    def save(self, *args, **kwargs):
+        self.search = self.book_id + ' ' + self.name + ' ' + self.category + ' ' + self.pub_com.name + ' ' + self.author.name + ' '
+        super(Books, self).save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 

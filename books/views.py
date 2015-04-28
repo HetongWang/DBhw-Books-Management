@@ -19,7 +19,7 @@ def index(request):
 def search(request, content):
     context = RequestContext(request)
     try:
-        books = models.Books.objects.get(name=content)
+        books = models.Books.objects.get(search__contains=content)
         if not (type(books) is list):
             books = [books]
         context.push({'books': books})
@@ -91,6 +91,10 @@ def libadmin(request):
         data = json.loads(request.body.decode('utf-8'))
         if data['action'] == 'add_book':
             try:
+                search = ''
+                for key in data:
+                    if key != 'action':
+                        search += data[key] + ' '
                 newbook = models.Books.objects.create(
                     pub_com = getPublishCompany(data['pub_com']),
                     book_id = data['book_id'],

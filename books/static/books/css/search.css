@@ -24,7 +24,6 @@
   display: inline-block;
   font-weight: bold;
   width: 15em;
-  border-right: solid 1px;
   margin-right: 5em;
 }
 #info .search-item .book-id:before {
