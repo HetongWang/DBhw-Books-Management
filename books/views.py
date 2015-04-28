@@ -6,6 +6,7 @@ from django.template import RequestContext
 from django.contrib.auth import authenticate, login as djangoLogin, logout as djangoLogout
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from django.core import serializers
 from django.utils import timezone
 
 from books import models
@@ -185,6 +186,22 @@ def libadmin(request):
                     opError('You cannot remove the book from the library, for there are copies remain un-returned')
             except:
                 opError('No book matched')
+
+        if data['action'] == 'card_book':
+            try:
+                cards = models.Card.objects.get(card_id=data['card_id'])
+                if type(cards) is not list:
+                    cards = [cards]
+                records = models.Record.objects.filter(card__in=cards)
+                if type(records) is not list:
+                    records = [records]
+                ids = []
+                for record in records:
+                    ids.append(record[0].book.book_id)
+                books = models.Books.objects.filter(book_id__in=ids)
+                context['books'] = serializers.serialize('json', books)
+            except Exception as e:
+                opError(str(e))
 
         jsondata = json.dumps(context)
         return HttpResponse(jsondata, content_type="application/json")

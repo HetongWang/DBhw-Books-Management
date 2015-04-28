@@ -9,3 +9,62 @@
 .active-tag {
 	background-color: #eee;
 }
+
+.btn {
+	width: 80px;
+	margin-left: 20px;
+}
+
+#info {
+	display: block;
+	list-style: none;
+	margin-top: 65px;
+}
+#info .search-item {
+  border-bottom: 1px solid #000;
+  height: auto;
+  padding-top: 1em;
+  padding-left: 1em;
+}
+#info .search-item:after {
+  content: " ";
+  display: block;
+  height: 1em;
+}
+#info .search-item:hover {
+  background-color: #eee;
+}
+#info .search-item span {
+  display: block;
+  height: 1.5em;
+}
+#info .search-item span:before {
+  display: inline-block;
+  font-weight: bold;
+  width: 15em;
+  margin-right: 5em;
+}
+#info .search-item .book-id:before {
+  content: "Book ID:";
+}
+#info .search-item .book-category:before {
+  content: "Category:";
+}
+#info .search-item .book-name:before {
+  content: "Book Name:";
+}
+#info .search-item .book-pub-com:before {
+  content: "Book Publish Company";
+}
+#info .search-item .book-pub-year:before {
+  content: "Book Publish Year";
+}
+#info .search-item .book-author:before {
+  content: "Author";
+}
+#info .search-item .book-price:before {
+  content: "Price";
+}
+#info .search-item .book-left:before {
+  content: "Left";
+}

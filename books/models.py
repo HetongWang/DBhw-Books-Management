@@ -66,3 +66,5 @@ class Record(models.Model):
     return_time = models.DateTimeField(null=True)
     admin = models.ForeignKey(User)
 
+    def __str__(self):
+        return self.book.book_id

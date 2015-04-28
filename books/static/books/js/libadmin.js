@@ -1,3 +1,26 @@
+Item = (function() {
+    function Item(data) {
+        this.item = $('<li/>');
+        this.data = data;
+        this.render();
+    }
+
+    Item.prototype.render = function() {
+        this.item.addClass('search-item').append(
+            $('<span/>').addClass("book-id").text(this.data.book_id),
+            $('<span/>').addClass("book-category").text(this.data.category),
+            $('<span/>').addClass("book-name").text(this.data.name),
+            $('<span/>').addClass("book-pub-com").text(this.data.pub_com),
+            $('<span/>').addClass("book-pub-year").text(this.data.pub_year),
+            $('<span/>').addClass("book-author").text(this.data.author),
+            $('<span/>').addClass("book-price").text(this.data.price),
+            $('<span/>').addClass("book-left").text(this.data.left)
+        );
+    }
+
+    return Item;
+})();
+
 var tagClick = function(tag) {
     var $tag = $(tag);
     $('.side-bar-tag').removeClass('active-tag')
@@ -5,6 +28,7 @@ var tagClick = function(tag) {
     var formid = '#' + tag.id + '-tag';
     $('.mng-tag').addClass('hidden');
     $(formid).removeClass('hidden');
+    $('#info').css('display', 'none');
 };
 
 var postmsg = function(succ, msg) {
@@ -111,5 +135,42 @@ $(function() {
                 });
             }
         }
+    });
+
+    $('.search-card-book').click(function() {
+        var action = 'card_book';
+
+        var data = {
+            'action': action,
+            'card_id': $(this).parent().find('input[name="card_id"]').val()
+        };
+        var csrftoken = getcsrftoken();
+
+        $.ajax({
+            url: '/libadmin/',
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            beforeSend: function(xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            },
+            success: function(data, status, xhr) {
+                data.books = JSON.parse(data.books);
+                $('#info').html('');
+                if (data.err == false) {
+                    for (var i = 0; i < data.books.length; i++) {
+                        var item = new Item(data.books[i].fields);
+                        $('#info').append(item.item);
+                    }
+                    $('#info').fadeIn();
+                }
+                else
+                    postmsg(false, data.msg);
+            },
+            error: function(xhr, errorType, error) {
+                postmsg(false, 'Unexcept error, please check input');
+            }
+        });
     });
 });
