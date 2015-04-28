@@ -8,17 +8,30 @@ var tagClick = function(tag) {
 };
 
 var postmsg = function(succ, msg) {
+    var $div = $('<div class="message alert" style="display:none;" role="alert"></div>')
+    $('#op-field').prepend($div);
+
     if (succ) {
-        $('#message').removeClass('alert-danger hidden')
-                     .addClass('alert-success')
-                     .text(msg);
+        $div.addClass('alert-success').text(msg)
+            .fadeIn();
     }
     else {
-        $('#message').removeClass('alert-success hidden')
-                      .addClass('alert-danger')
-                      .html('<b>Error: </b>' + msg);
+        $div.addClass('alert-danger').html('<b>Error: </b>' + msg)
+            .fadeIn();
     }
+
+    setTimeout(function() {
+        $div.fadeOut(function() {
+            $div.remove();
+        });
+    }, 3000)
 };
+
+var getcsrftoken = function() {
+    var cookie = document.cookie + ';';
+    csrftoken = cookie.match(/csrftoken=(\w+);/)[1];
+    return csrftoken;
+}
 
 $(function() {
     $('.side-bar-tag').bind('click', function() {
@@ -39,9 +52,7 @@ $(function() {
         for (var i = inputs.length - 1; i >= 0; i--) {
             data[inputs[i].name] = $(inputs[i]).val();
         }; 
-
-        var cookie = document.cookie + ';';
-        csrftoken = cookie.match(/csrftoken=(\w+);/)[1];
+        var csrftoken = getcsrftoken();
 
         $.ajax({
             url: '/libadmin/',
@@ -65,7 +76,7 @@ $(function() {
     });
     $('#book-file-tag').children('form').submit(function(event) {
         var action = 'add_book';
-        var jsonstr = $(this).find('input').val();
+        var jsonstr = $(this).find('textarea').val();
         try {
             var jsondata = JSON.parse(jsonstr);
         }
@@ -73,6 +84,9 @@ $(function() {
             postmsg(false, 'Please typte standard JSON');
         }
         if (jsondata !== undefined) {
+            if (typeof jsondata == 'object')
+                jsondata = [jsondata];
+
             for (var i = 0; i < jsondata.length; i++) {
                 var data = jsondata[i];
 
@@ -83,7 +97,7 @@ $(function() {
                     data: JSON.stringify(data),
                     dataType: 'json',
                     beforeSend: function(xhr, settings) {
-                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        xhr.setRequestHeader("X-CSRFToken", getcsrftoken());
                     },
                     success: function(data, status, xhr) {
                         if (data.err == false)

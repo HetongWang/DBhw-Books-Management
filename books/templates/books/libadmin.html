@@ -16,10 +16,8 @@
         <li><a class="side-bar-tag" href="javascript:void(0)" id="book-file">Add Book by JSON</a></li>
     </ul>
 </div>
-<div class="col-md-9">
-	<div id="message" class="alert alert-danger hidden" role="alert">
-	</div>
-	<div class="mng-tag hidden" id="add-book-tag">
+<div id="op-field" class="col-md-9">
+		<div class="mng-tag hidden" id="add-book-tag">
 		<form class="form-horizontal">
 			<div class="form-group">
 			<label class="col-md-3 control-label">Book ID</label>
@@ -159,9 +157,9 @@
 	</div>
 	<div class="mng-tag hidden" id="book-file-tag">
 		<form>
-			<div class="form-group col-md-offset-1">
+			<div class="form-group">
 			<label class="control-label" for="file">JSON Text</label>
-			<textarea class="form-control" name="file" rows="5" placeholder="Please type standard JSON string" required></textarea>
+			<textarea class="form-control" name="file" rows="5" placeholder="Please type standard JSON string" required>Example: {"action":"add_book","amount":"2","price":"1","author":"asdf","pub_year":"asdf","pub_com":"asdf","name":"asdf","category":"asdf","book_id":"asdfasdf"}</textarea>
 			</div>
 			<button type="submit" id="book-file-submit" class="btn btn-primary pull-right">Submit</button>
 		</form>
