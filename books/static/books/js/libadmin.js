@@ -100,7 +100,11 @@ $(function() {
     });
     $('#book-file-tag').children('form').submit(function(event) {
         var action = 'add_book';
-        var jsonstr = $(this).find('textarea').val();
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          var jsonstr = reader.result;
+        
         try {
             var jsondata = JSON.parse(jsonstr);
         }
@@ -108,7 +112,7 @@ $(function() {
             postmsg(false, 'Please typte standard JSON');
         }
         if (jsondata !== undefined) {
-            if (Object.prototype.toString.call(a) === '[object Array]')
+            if (Object.prototype.toString.call(jsondata) !== '[object Array]')
                 jsondata = [jsondata];
 
             for (var i = 0; i < jsondata.length; i++) {
@@ -135,6 +139,9 @@ $(function() {
                 });
             }
         }
+    }
+        var file = $(this).find('input[name="f"]')[0].files[0];
+        reader.readAsText(file);
     });
 
     $('.search-card-book').click(function() {

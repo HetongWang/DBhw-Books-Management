@@ -93,6 +93,8 @@ def libadmin(request):
         data = json.loads(request.body.decode('utf-8'))
         if data['action'] == 'add_book':
             try:
+                book = models.Books.objects.get(book_id=data['book_id'])
+            except:
                 newbook = models.Books.objects.create(
                     pub_com = getPublishCompany(data['pub_com']),
                     book_id = data['book_id'],
@@ -104,12 +106,13 @@ def libadmin(request):
                     category = data['category'],
                     author = getAuthor(data['author'])
                 )
-                if newbook is not None:
+                try:
                     newbook.save()
-                else:
-                    opError('Add Book Failed, Please Check if card is conflict')
-            except Exception as e:
-                opError(str(e))
+                except Exception as e:
+                    opError(str(e))
+            else:
+                book.amount += data['amount']
+                book.save()
 
         if data['action'] == 'add_card':
             try:
