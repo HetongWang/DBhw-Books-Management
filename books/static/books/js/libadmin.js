@@ -7,7 +7,7 @@ Item = (function() {
 
     Item.prototype.render = function() {
         this.item.addClass('search-item').append(
-            $('<span/>').addClass("book-id").text(this.data.book_id),
+            $('<span/>').addClass("book-id").text(this.data.pk),
             $('<span/>').addClass("book-category").text(this.data.category),
             $('<span/>').addClass("book-name").text(this.data.name),
             $('<span/>').addClass("book-pub-com").text(this.data.pub_com),

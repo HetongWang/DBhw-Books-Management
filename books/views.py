@@ -21,9 +21,7 @@ def index(request):
 def search(request, content):
     context = RequestContext(request)
     try:
-        books = models.Books.objects.get(search__contains=content)
-        if not (type(books) is list):
-            books = [books]
+        books = models.Books.objects.filter(search__contains=content)
         context.push({'books': books})
     except:
         context.push({'none': True})
@@ -111,7 +109,8 @@ def libadmin(request):
                 except Exception as e:
                     opError(str(e))
             else:
-                book.amount += data['amount']
+                book.amount += int(data['amount'])
+                book.left += int(data['amount'])
                 book.save()
 
         if data['action'] == 'add_card':

@@ -15,9 +15,6 @@ class UserAdmin(admin.ModelAdmin):
         (None, {'fields': ['username', 'password', 'email']}),
     ]
 
-admin.site.unregister(User)
-admin.site.register(User, UserAdmin)
-
 admin.site.register(Books)
 admin.site.register(Card)
 admin.site.register(Author)
